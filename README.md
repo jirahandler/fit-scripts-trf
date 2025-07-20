@@ -28,9 +28,9 @@ Your `skeleton-trf-config` and `run_all_signal.py` script needs to reside here:
 Then run the following inside the trf inside the cvmfs environment after setting up `StatAnalysis`
 ```bash=
 setupATLAS -q
-/home/sgoswami/monobcntuples/local-samples/trf-workdir
+cd /home/sgoswami/monobcntuples/local-samples/trf-workdir
 asetup StatAnalysis,0.6.1,here
 python3 run_all_signals.py
 ```
 
-The folders named `<fit_name>_fit` will appear on the top level directory (`trf-workdir`)
+The folders named `<fit_name>_fit` will appear on the top level directory (`trf-workdir`) after a successful run
