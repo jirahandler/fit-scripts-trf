@@ -1,0 +1,164 @@
+### Job settings
+Job: "JOB_NAME"
+    ReadFrom: HIST
+    HistoPath: "./"
+    OutputDir: "OUTPUT_DIRECTORY"
+    Label: "SIGNAL_LABEL"
+    Lumi: 1
+    LumiLabel: "140 fb^{-1}"
+    CmeLabel: "13TeV"
+    POI: "SigXsecOverSM"
+    PlotOptions: "YIELDS, OVERSIG"
+    DebugLevel: 2.0
+    RatioYmax: 2
+    RatioYmin: 0
+    #RatioType: "SOVERSQRT(B)"
+    ImageFormat: png
+
+### Fit configurations
+Fit: "fit"
+    FitType: SPLUSB
+    FitRegion: CRSR
+    UseMinos: SigXsecOverSM
+    FitStrategy: 2
+    POIAsimov: 1.0
+
+### Limit configurations
+Limit: "limit"
+    LimitType: ASYMPTOTIC
+
+### Signal regions
+Region: "SR_b_tagged"
+    Type: SIGNAL
+    Label: "SR b-tagged"
+    Variable: "met_sig_b_tagged"
+    VariableTitle: "E_{T}^{miss} Significance"
+    YaxisTitle: "Events / 2"
+
+Region: "SR_untagged"
+    Type: SIGNAL
+    Label: "SR untagged"
+    Variable: "met_sig_untagged"
+    VariableTitle: "E_{T}^{miss} Significance"
+    YaxisTitle: "Events / 2"
+
+### Data Sample
+Sample: "data_tagged"
+    Type: DATA
+    Title: "Pseudo-Data"
+    Regions: SR_b_tagged
+    HistoFile: "ASIMOV_HIST_FILE"
+    HistoName: "met_sig_b_tagged"
+
+Sample: "data_untagged"
+    Type: DATA
+    Title: "Pseudo-Data"
+    Regions: SR_untagged
+    HistoFile: "ASIMOV_HIST_FILE"
+    HistoName: "met_sig_untagged"
+
+### Background Samples
+Sample: "znunu_tagged"
+    Type: BACKGROUND
+    Title: "Z #rightarrow #nu#nu"
+    FillColor: 801
+    Group: "Z #rightarrow #nu#nu"
+    Regions: SR_b_tagged
+    HistoFile: "histo_znunu"
+    HistoName: "met_sig_b_tagged"
+
+Sample: "znunu_untagged"
+    Type: BACKGROUND
+    Title: "Z #rightarrow #nu#nu"
+    FillColor: 801
+    Group: "Z #rightarrow #nu#nu"
+    Regions: SR_untagged
+    HistoFile: "histo_znunu"
+    HistoName: "met_sig_untagged"
+
+Sample: "ttbar_tagged"
+    Type: BACKGROUND
+    Title: "t#bar{t}"
+    FillColor: 861
+    Group: "t#bar{t}"
+    Regions: SR_b_tagged
+    HistoFile: "histo_ttbar"
+    HistoName: "met_sig_b_tagged"
+
+Sample: "ttbar_untagged"
+    Type: BACKGROUND
+    Title: "t#bar{t}"
+    FillColor: 861
+    Group: "t#bar{t}"
+    Regions: SR_untagged
+    HistoFile: "histo_ttbar"
+    HistoName: "met_sig_untagged"
+
+Sample: "wjets_tagged"
+    Type: BACKGROUND
+    Title: "W+jets"
+    FillColor: 845
+    Group: "W+jets"
+    Regions: SR_b_tagged
+    HistoFile: "histo_wjets"
+    HistoName: "met_sig_b_tagged"
+
+Sample: "wjets_untagged"
+    Type: BACKGROUND
+    Title: "W+jets"
+    FillColor: 845
+    Group: "W+jets"
+    Regions: SR_untagged
+    HistoFile: "histo_wjets"
+    HistoName: "met_sig_untagged"
+
+### Signal Sample
+Sample: "signal_tagged"
+    Type: SIGNAL
+    Title: "SIGNAL_LABEL"
+    LineColor: 634
+    Group: "Signal"
+    Regions: SR_b_tagged
+    HistoFile: "HISTO_SIGNAL_FILE"
+    HistoName: "met_sig_b_tagged"
+
+Sample: "signal_untagged"
+    Type: SIGNAL
+    Title: "SIGNAL_LABEL"
+    LineColor: 634
+    Group: "Signal"
+    Regions: SR_untagged
+    HistoFile: "HISTO_SIGNAL_FILE"
+    HistoName: "met_sig_untagged"
+
+### Normalization
+NormFactor: "znunu_total_sf"
+    Nominal: 101.73
+    Min: 101.73
+    Max: 101.73
+    Samples: znunu_tagged, znunu_untagged
+
+NormFactor: "wjets_total_sf"
+    Nominal: 19876.1
+    Min: 19876.1
+    Max: 19876.1
+    Samples: wjets_tagged, wjets_untagged
+
+NormFactor: "ttbar_total_sf"
+    Nominal: 499.28
+    Min: 499.28
+    Max: 499.28
+    Samples: ttbar_tagged, ttbar_untagged
+
+NormFactor: "signal_sf"
+    Nominal: SIGNAL_SCALE_FACTOR
+    Min: SIGNAL_SCALE_FACTOR
+    Max: SIGNAL_SCALE_FACTOR
+    Samples: signal_tagged, signal_untagged
+
+NormFactor: "SigXsecOverSM"
+    Title: "#mu(SIGNAL_LABEL)"
+    Nominal: 1
+    Min: 0
+    Max: 10
+    Samples: signal_tagged, signal_untagged

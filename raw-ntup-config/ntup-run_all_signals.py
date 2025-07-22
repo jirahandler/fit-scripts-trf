@@ -24,7 +24,7 @@ signal_points = [
 
 def main():
     try:
-        with open("skeleton-trf-config.txt", "r") as f:
+        with open("trf-config-ntup.txt", "r") as f:
             base_config = f.read()
     except FileNotFoundError:
         print("ERROR: skeleton-trf-config.txt not found. Please create it first.")

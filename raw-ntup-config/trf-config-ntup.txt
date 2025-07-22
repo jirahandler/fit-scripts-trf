@@ -7,7 +7,7 @@ Job: "JOB_NAME"
     ExperimentLabel: "Local"
     PlotLabel: " MG5+PY8"
     CmeLabel: "13TeV"
-    LumiLabel: "--"
+    LumiLabel: "140 fb^{-1}"
     POI: "SigXsecOverSM"
     PlotOptions: "YIELDS, OVERSIG"
     RatioYmax: 0.5
