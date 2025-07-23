@@ -71,7 +71,7 @@ conda deactivate
 ### 2. Other scripts (NTuple & ML) **CVMFS Apptainer Container**
 
 ```bash
-# set up TRExFitter from CVMFS or ATLAS container
+# set up TRExFitter from CVMFS
 setupATLAS -q
 asetup StatAnalysis,0.6.1,here
 
