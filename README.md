@@ -1,36 +1,88 @@
-# How to run:
+## NTuple Directory Organization
 
-First this needs to be the dir structre of your folder:
-
-```bash=
-tree /home/sgoswami/monobcntuples/local-samples/trf-workdir/SR/flattenedNTuples
--- SR
-    `-- flattenedNTuples
-        |-- bkg
-        |   |-- flat_tuple_ttbar.root
-        |   |-- flat_tuple_wlnu0.root
-        |   |-- flat_tuple_wlnu1.root
-        |   `-- flat_tuple_znunu_600K.root
-        `-- sig
-            |-- dm
-            |   |-- flat_tuple_yy_1p0_qcd.root
-            |   |-- flat_tuple_yy_1p5_qcd.root
-            |   `-- flat_tuple_yy_2p5_qcd.root
-            `-- lq
-                |-- flat_tuple_lq_1p6TeV_merged_600K.root
-                |-- flat_tuple_lq_2p4TeV_merged_600K.root
-                `-- flat_tuple_lq_2TeV_merged_600K.root
+```
+<workdir>/SR/flattenedNTuples/
+|-- bkg/
+|   |-- flat_tuple_ttbar.root
+|   |-- flat_tuple_wlnu0.root
+|   |-- flat_tuple_wlnu1.root
+|   `-- flat_tuple_znunu_600K.root
+`-- sig/
+    |-- dm/
+    |   |-- flat_tuple_yy_1p0_qcd.root
+    |   |-- flat_tuple_yy_1p5_qcd.root
+    |   `-- flat_tuple_yy_2p5_qcd.root
+    `-- lq/
+        |-- flat_tuple_lq_1p6TeV_merged_600K.root
+        |-- flat_tuple_lq_2TeV_merged_600K.root
+        `-- flat_tuple_lq_2p4TeV_merged_600K.root
 ```
 
-Your `skeleton-trf-config` and `run_all_signal.py` script needs to reside here:
-` /home/sgoswami/monobcntuples/local-samples/trf-workdir/`
+## Repository File Structure
 
-Then run the following inside the trf inside the cvmfs environment after setting up `StatAnalysis`
-```bash=
+```
+fit-scripts-trf/
+|-- .gitignore
+|-- README.md
+|-- raw-ntup-config/
+|   |-- ntup-run_all_signals.py
+|   `-- trf-config-ntup.txt
+|-- raw-hist-config/
+|   |-- create-asimov.py
+|   |-- histo-run_all_signals.py
+|   `-- trf-config-hist.txt
+`-- nn-score-config/
+    |-- run_all_signals.py
+    `-- skeleton-trf-config-ml.txt
+```
+
+## File Descriptions
+
+| File Path                                  | Description                                                                                   |
+|--------------------------------------------|-----------------------------------------------------------------------------------------------|
+| .gitignore                                 | Specifies files/directories to ignore (e.g., `output/`).                                      |
+| README.md                                  | This overview and instructions file.                                                         |
+| raw-ntup-config/ntup-run_all_signals.py    | Driver: generates TRExFitter configs and runs fits directly on NTuples.                      |
+| raw-ntup-config/trf-config-ntup.txt        | Skeleton TRExFitter config template for NTuple-based fits.                                    |
+| raw-hist-config/create-asimov.py           | Generates per-sample histograms and Asimov datasets from NTuples; **must run first**.        |
+| raw-hist-config/histo-run_all_signals.py   | Driver: generates TRExFitter configs and runs fits using histogram inputs.                   |
+| raw-hist-config/trf-config-hist.txt        | Skeleton TRExFitter config template for histogram-based fits.                                 |
+| nn-score-config/run_all_signals.py         | Driver: generates TRExFitter configs and runs fits using ML discriminant NTuples.            |
+| nn-score-config/skeleton-trf-config-ml.txt | Skeleton TRExFitter config template for ML discriminant-based fits.                          |
+
+## How to Run
+
+### 1. Histogram pipeline (Asimov generation) ? **Conda environment only**
+
+```bash
+# create & activate minimal env for create-asimov.py
+conda create -n trf-hist-env python=3.9 numpy uproot -c conda-forge
+conda activate trf-hist-env
+
+# run Asimov histogram generation
+cd raw-hist-config
+python create-asimov.py
+
+# deactivate once done
+conda deactivate
+```
+
+### 2. Other scripts (NTuple & ML) ? **ATLAS CVMFS / Apptainer**
+
+```bash
+# set up TRExFitter from CVMFS or ATLAS container
 setupATLAS -q
-cd /home/sgoswami/monobcntuples/local-samples/trf-workdir
 asetup StatAnalysis,0.6.1,here
-python3 run_all_signals.py
-```
 
-The folders named `<fit_name>_fit` will appear on the top level directory (`trf-workdir`) after a successful run
+# Raw NTuple fits
+cd raw-ntup-config
+python ntup-run_all_signals.py
+
+# Histogram-based fits (uses outputs of create-asimov.py)
+cd ../raw-hist-config
+python histo-run_all_signals.py
+
+# ML discriminant fits
+cd ../nn-score-config
+python run_all_signals.py
+```

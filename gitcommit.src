@@ -1,0 +1,5 @@
+git remote add origin https://github.com/jirahandler/fit-scripts-trf.git
+git add .
+date=$(date '+%Y-%m-%d %H:%M:%S')
+git commit -m "Commit at $(date) "
+git push -u origin main
