@@ -49,6 +49,7 @@ fit-scripts-trf/
 | raw-hist-config/trf-config-hist.txt        | Skeleton TRExFitter config template for histogram-based fits.                                 |
 | nn-score-config/run_all_signals.py         | Driver: generates TRExFitter configs and runs fits using ML discriminant NTuples.            |
 | nn-score-config/skeleton-trf-config-ml.txt | Skeleton TRExFitter config template for ML discriminant-based fits.                          |
+| flattuple_enhanced.py                      | Makes flattened data structures out of Delphes root files.                                   |
 
 ## How to Run
 
