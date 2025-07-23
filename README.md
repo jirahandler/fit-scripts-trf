@@ -53,7 +53,7 @@ fit-scripts-trf/
 
 ## How to Run
 
-### 1. Histogram pipeline (Asimov generation) ? **Conda environment only**
+### 1. Histogram pipeline (Fake Data Histogram Ntuple Creation generation) **Conda environment only**
 
 ```bash
 # create & activate minimal env for create-asimov.py
@@ -68,7 +68,7 @@ python create-asimov.py
 conda deactivate
 ```
 
-### 2. Other scripts (NTuple & ML) ? **ATLAS CVMFS / Apptainer**
+### 2. Other scripts (NTuple & ML) **CVMFS Apptainer Container**
 
 ```bash
 # set up TRExFitter from CVMFS or ATLAS container
