@@ -19,7 +19,7 @@ import uproot
 import awkward as ak
 
 
-def compute_leading_jets(jets_pt, jets_eta, jets_phi):
+def compute_leading_jets(jets_pt, jets_eta, jets_phi, jets_flavor):
     """
     Find events that have at least two jets, sort jets by pT in descending order,
     and return arrays for the leading and subleading jets along with a mask
@@ -32,12 +32,14 @@ def compute_leading_jets(jets_pt, jets_eta, jets_phi):
     pt_selected  = jets_pt[mask_two_jets]
     eta_selected = jets_eta[mask_two_jets]
     phi_selected = jets_phi[mask_two_jets]
+    flavor_selected = jets_flavor[mask_two_jets]
 
     # Sort jets by pT for each event
     order = ak.argsort(pt_selected, axis=1, ascending=False)
     pt_sorted  = pt_selected[order]
     eta_sorted = eta_selected[order]
     phi_sorted = phi_selected[order]
+    flavor_sorted = flavor_selected[order]
 
     # Extract leading (0) and subleading (1) jets
     pt1  = pt_sorted[:, 0]
@@ -46,6 +48,7 @@ def compute_leading_jets(jets_pt, jets_eta, jets_phi):
     eta2 = eta_sorted[:, 1]
     phi1 = phi_sorted[:, 0]
     phi2 = phi_sorted[:, 1]
+    flavor1 = flavor_sorted[:, 0]
 
     # Convert to NumPy arrays so we can slice them later
     return (
@@ -55,7 +58,8 @@ def compute_leading_jets(jets_pt, jets_eta, jets_phi):
         eta2.to_numpy(),
         phi1.to_numpy(),
         phi2.to_numpy(),
-        mask_two_jets.to_numpy()
+        mask_two_jets.to_numpy(),
+        flavor1.to_numpy()
     )
 
 
@@ -82,6 +86,7 @@ def process_file(input_path):
     jets_pt  = tree['Jet.PT'].array(library='ak')
     jets_eta = tree['Jet.Eta'].array(library='ak')
     jets_phi = tree['Jet.Phi'].array(library='ak')
+    jets_flavor = tree['Jet.Flavor'].array(library='ak')
 
     # Load MET and HT
     met_ak     = tree['MissingET.MET'].array(library='ak')
@@ -92,19 +97,20 @@ def process_file(input_path):
     xsec_ak   = tree['Event.CrossSection'].array(library='ak')
     weight_ak = tree['Event.Weight'].array(library='ak')
 
-    # Load the b-tagging bit if it exists, otherwise assume all zeros
+    # Load the tagging information from the correct branch
     try:
-        btag_ak = tree['Jet.BTag'].array(library='ak')
+        tag_ak = tree['Jet.BTag'].array(library='ak')
     except uproot.KeyInFileError:
-        btag_ak = ak.zeros_like(jets_pt, dtype=int)
+        print("  -> Warning: Jet.BTag branch not found. Assuming no tags.")
+        tag_ak = ak.zeros_like(jets_pt, dtype=int)
 
-    # Count all jets and b-jets per event
+    # Count all jets and c-jets per event
     n_jets  = ak.num(jets_pt, axis=1)
-    n_bjets = ak.sum(btag_ak > 0, axis=1)
+    n_cjets = ak.sum(tag_ak > 0, axis=1)
 
     # Get leading and subleading jets and mask for events with at least two jets
-    pt1, pt2, eta1, eta2, phi1, phi2, mask2j = compute_leading_jets(
-        jets_pt, jets_eta, jets_phi
+    pt1, pt2, eta1, eta2, phi1, phi2, mask2j, flavor1 = compute_leading_jets(
+        jets_pt, jets_eta, jets_phi, jets_flavor
     )
 
     # Apply jet kinematics selection
@@ -126,6 +132,7 @@ def process_file(input_path):
     phi2    = phi2[mask_jetkin].astype(np.float32)
     met     = met[mask_jetkin].astype(np.float32)
     met_phi = met_phi[mask_jetkin].astype(np.float32)
+    flavor1 = flavor1[mask_jetkin]
 
     # Now apply the MET selection
     mask_met = met >= 200.0
@@ -137,6 +144,7 @@ def process_file(input_path):
     phi2     = phi2[mask_met]
     met      = met[mask_met]
     met_phi  = met_phi[mask_met]
+    flavor1  = flavor1[mask_met]
 
     # Build an index array to slice other branches in the same order
     idx_all = np.where(mask2j)[0]
@@ -145,7 +153,7 @@ def process_file(input_path):
 
     # Slice other event-level variables
     n_jets  = n_jets.to_numpy()[idx_all].astype(np.int32)
-    n_bjets = n_bjets.to_numpy()[idx_all].astype(np.int32)
+    n_cjets = n_cjets.to_numpy()[idx_all].astype(np.int32)
     cross   = xsec_ak.to_numpy().squeeze()[idx_all].astype(np.float32)
     weight  = weight_ak.to_numpy().squeeze()[idx_all].astype(np.float32)
     ht      = ht_ak.to_numpy().squeeze()[idx_all].astype(np.float32)
@@ -166,14 +174,18 @@ def process_file(input_path):
         'jet1met_dphi': jet1_met_dphi,
         'met_sig': met_significance,
         'nJets': n_jets,
-        'nBjets': n_bjets,
+        'nCjets': n_cjets,
         'event_xsec': cross,
         'event_weight': weight
     }
 
     # Split events into tagged and untagged samples
-    tag_mask   = branches['nBjets'] > 0
-    untag_mask = branches['nBjets'] == 0
+    # An event is c-tagged if it has at least one tagged jet AND the leading jet is a charm jet.
+    has_tagged_jet = branches['nCjets'] > 0
+    is_leading_charm = np.abs(flavor1) == 4
+    tag_mask   = has_tagged_jet & is_leading_charm
+
+    untag_mask = ~tag_mask
     tagged     = {k: v[tag_mask]   for k, v in branches.items()}
     untagged   = {k: v[untag_mask] for k, v in branches.items()}
 
@@ -183,8 +195,8 @@ def process_file(input_path):
 
     # Write the output file with two TTrees
     with uproot.recreate(output_name) as out:
-        out.mktree('b_tagged', types)
-        out['b_tagged'].extend(tagged)
+        out.mktree('c_tagged', types)
+        out['c_tagged'].extend(tagged)
         out.mktree('untagged', types)
         out['untagged'].extend(untagged)
 

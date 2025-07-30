@@ -28,10 +28,10 @@ Limit: "limit"
     LimitType: ASYMPTOTIC
 
 ### Signal regions
-Region: "SR_b_tagged"
+Region: "SR_c_tagged"
     Type: SIGNAL
-    Label: "SR b-tagged"
-    Variable: "met_sig_b_tagged"
+    Label: "SR c-tagged"
+    Variable: "met_sig_c_tagged"
     VariableTitle: "E_{T}^{miss} Significance"
     YaxisTitle: "Events / 2"
 
@@ -46,9 +46,9 @@ Region: "SR_untagged"
 Sample: "data_tagged"
     Type: DATA
     Title: "Pseudo-Data"
-    Regions: SR_b_tagged
+    Regions: SR_c_tagged
     HistoFile: "ASIMOV_HIST_FILE"
-    HistoName: "met_sig_b_tagged"
+    HistoName: "met_sig_c_tagged"
 
 Sample: "data_untagged"
     Type: DATA
@@ -63,9 +63,9 @@ Sample: "znunu_tagged"
     Title: "Z #rightarrow #nu#nu"
     FillColor: 801
     Group: "Z #rightarrow #nu#nu"
-    Regions: SR_b_tagged
+    Regions: SR_c_tagged
     HistoFile: "histo_znunu"
-    HistoName: "met_sig_b_tagged"
+    HistoName: "met_sig_c_tagged"
 
 Sample: "znunu_untagged"
     Type: BACKGROUND
@@ -81,9 +81,9 @@ Sample: "ttbar_tagged"
     Title: "t#bar{t}"
     FillColor: 861
     Group: "t#bar{t}"
-    Regions: SR_b_tagged
+    Regions: SR_c_tagged
     HistoFile: "histo_ttbar"
-    HistoName: "met_sig_b_tagged"
+    HistoName: "met_sig_c_tagged"
 
 Sample: "ttbar_untagged"
     Type: BACKGROUND
@@ -99,9 +99,9 @@ Sample: "wjets_tagged"
     Title: "W+jets"
     FillColor: 845
     Group: "W+jets"
-    Regions: SR_b_tagged
+    Regions: SR_c_tagged
     HistoFile: "histo_wjets"
-    HistoName: "met_sig_b_tagged"
+    HistoName: "met_sig_c_tagged"
 
 Sample: "wjets_untagged"
     Type: BACKGROUND
@@ -118,9 +118,9 @@ Sample: "signal_tagged"
     Title: "SIGNAL_LABEL"
     LineColor: 634
     Group: "Signal"
-    Regions: SR_b_tagged
+    Regions: SR_c_tagged
     HistoFile: "HISTO_SIGNAL_FILE"
-    HistoName: "met_sig_b_tagged"
+    HistoName: "met_sig_c_tagged"
 
 Sample: "signal_untagged"
     Type: SIGNAL
@@ -132,22 +132,23 @@ Sample: "signal_untagged"
     HistoName: "met_sig_untagged"
 
 ### Normalization
+### Normalization
 NormFactor: "znunu_total_sf"
-    Nominal: 101.73
-    Min: 101.73
-    Max: 101.73
+    Nominal: 101.736
+    Min: 101.736
+    Max: 101.736
     Samples: znunu_tagged, znunu_untagged
 
 NormFactor: "wjets_total_sf"
-    Nominal: 19876.1
-    Min: 19876.1
-    Max: 19876.1
+    Nominal: 19876.78
+    Min: 19876.78
+    Max: 19876.78
     Samples: wjets_tagged, wjets_untagged
 
 NormFactor: "ttbar_total_sf"
-    Nominal: 499.28
-    Min: 499.28
-    Max: 499.28
+    Nominal: 499.29
+    Min: 499.29
+    Max: 499.29
     Samples: ttbar_tagged, ttbar_untagged
 
 NormFactor: "signal_sf"

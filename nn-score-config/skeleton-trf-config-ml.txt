@@ -32,9 +32,9 @@ Limit: "limit"
     LimitType: ASYMPTOTIC
 
 ### Signal regions
-Region: "SR_b_tagged"
+Region: "SR_c_tagged"
     Type: SIGNAL
-    Label: "SR b-tagged"
+    Label: "SR c-tagged"
     DataType: ASIMOV
     Variable: "DISCRIMINANT_BRANCH",20,0.0,1.0
     VariableTitle: "ML Discriminant"
@@ -53,9 +53,9 @@ Sample: "znunu_tagged"
     Type: BACKGROUND
     Title: "Z #rightarrow #nu#nu"
     FillColor: 856
-    Regions: SR_b_tagged
+    Regions: SR_c_tagged
     Group: "Z #rightarrow #nu#nu"
-    NtupleName: "znunu_b_taggedSUFFIX"
+    NtupleName: "znunu_c_tagged"
 
 Sample: "znunu_untagged"
     Type: BACKGROUND
@@ -63,15 +63,15 @@ Sample: "znunu_untagged"
     FillColor: 856
     Regions: SR_untagged
     Group: "Z #rightarrow #nu#nu"
-    NtupleName: "znunu_untaggedSUFFIX"
+    NtupleName: "znunu_untagged"
 
 Sample: "ttbar_tagged"
     Type: BACKGROUND
     Title: "t#bar{t}"
     FillColor: 602
-    Regions: SR_b_tagged
+    Regions: SR_c_tagged
     Group: "t#bar{t}"
-    NtupleName: "ttbar_b_taggedSUFFIX"
+    NtupleName: "ttbar_c_tagged"
 
 Sample: "ttbar_untagged"
     Type: BACKGROUND
@@ -79,15 +79,15 @@ Sample: "ttbar_untagged"
     FillColor: 602
     Regions: SR_untagged
     Group: "t#bar{t}"
-    NtupleName: "ttbar_untaggedSUFFIX"
+    NtupleName: "ttbar_untagged"
 
 Sample: "wjets_tagged"
     Type: BACKGROUND
     Title: "W+jets"
     FillColor: 881
-    Regions: SR_b_tagged
+    Regions: SR_c_tagged
     Group: "W+jets"
-    NtupleName: "wjets_b_taggedSUFFIX"
+    NtupleName: "wjets_c_tagged"
 
 Sample: "wjets_untagged"
     Type: BACKGROUND
@@ -95,7 +95,7 @@ Sample: "wjets_untagged"
     FillColor: 881
     Regions: SR_untagged
     Group: "W+jets"
-    NtupleName: "wjets_untaggedSUFFIX"
+    NtupleName: "wjets_untagged"
 
 ### Signal Samples
 Sample: "signal_tagged"
@@ -103,8 +103,8 @@ Sample: "signal_tagged"
     Title: "SIGNAL_LABEL"
     LineColor: 632
     Group: "Signal"
-    Regions: SR_b_tagged
-    NtupleName: "SIGNAL_NAME_b_taggedSUFFIX"
+    Regions: SR_c_tagged
+    NtupleName: "SIGNAL_NAME_c_tagged"
 
 Sample: "signal_untagged"
     Type: SIGNAL
@@ -112,25 +112,25 @@ Sample: "signal_untagged"
     LineColor: 632
     Group: "Signal"
     Regions: SR_untagged
-    NtupleName: "SIGNAL_NAME_untaggedSUFFIX"
+    NtupleName: "SIGNAL_NAME_untagged"
 
 ### Fixed Scaling Factors
 NormFactor: "znunu_total_sf"
-    Nominal: 101.73
-    Min: 101.73
-    Max: 101.73
+    Nominal: 101.736
+    Min: 101.736
+    Max: 101.736
     Samples: znunu_tagged, znunu_untagged
 
 NormFactor: "wjets_total_sf"
-    Nominal: 19876.1
-    Min: 19876.1
-    Max: 19876.1
+    Nominal: 19876.78
+    Min: 19876.78
+    Max: 19876.78
     Samples: wjets_tagged, wjets_untagged
 
 NormFactor: "ttbar_total_sf"
-    Nominal: 499.28
-    Min: 499.28
-    Max: 499.28
+    Nominal: 499.29
+    Min: 499.29
+    Max: 499.29
     Samples: ttbar_tagged, ttbar_untagged
 
 NormFactor: "signal_sf"
