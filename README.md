@@ -9,9 +9,9 @@
 |   `-- flat_tuple_znunu_600K.root
 `-- sig/
     |-- dm/
-    |   |-- flat_tuple_yy_1p0_qcd.root
-    |   |-- flat_tuple_yy_1p5_qcd.root
-    |   `-- flat_tuple_yy_2p5_qcd.root
+    |   |-- flat_tuple_yy_1p0TeV_qcd.root
+    |   |-- flat_tuple_yy_1p5TeV_qcd.root
+    |   `-- flat_tuple_yy_2p5TeV_qcd.root
     `-- lq/
         |-- flat_tuple_lq_1p6TeV_merged_600K.root
         |-- flat_tuple_lq_2TeV_merged_600K.root
