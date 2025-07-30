@@ -67,7 +67,7 @@ fit-scripts-trf/
 
 ## How to Run
 
-### 1. Histogram Pipeline (Fake Data Histogram NTuple Creation) ? **Conda environment only**
+### 1. Histogram Pipeline (Fake Data Histogram NTuple Creation) **Conda environment only**
 
 ```bash
 # Create & activate minimal env for prepare-histograms.py
@@ -82,7 +82,7 @@ python3 prepare-histograms.py
 conda deactivate
 ```
 
-### 2. All Other Scripts (NTuple & ML) ? **CVMFS Apptainer container**
+### 2. All Other Scripts (NTuple & ML) **CVMFS Apptainer container**
 
 ```bash
 # Set up TRExFitter from CVMFS
